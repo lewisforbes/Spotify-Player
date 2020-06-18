@@ -2,10 +2,13 @@ package program;
 
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.model_objects.miscellaneous.CurrentlyPlaying;
+import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
 import com.wrapper.spotify.model_objects.specification.AudioFeatures;
 import com.wrapper.spotify.model_objects.specification.Track;
 import com.wrapper.spotify.requests.data.player.GetUsersCurrentlyPlayingTrackRequest;
 import com.wrapper.spotify.requests.data.tracks.GetAudioFeaturesForTrackRequest;
+
+import java.util.ArrayList;
 
 public class CurrentTrack {
     /** the current track as an api object **/
@@ -23,6 +26,9 @@ public class CurrentTrack {
     /** is a track playing currently? **/
     private boolean trackPlaying;
     public boolean isTrackPlaying() { return trackPlaying; }
+    /** the track's artists' names **/
+    private ArrayList<String> artistsNames;
+    public ArrayList<String> getArtistsNames() { return artistsNames; }
 
     /** audio features **/
     private float acousticness;
@@ -55,6 +61,7 @@ public class CurrentTrack {
             this.albumCoverURL = apiTrack.getAlbum().getImages()[0].getUrl();
             setAudioFeatures();
             setFeaturesEmbed();
+            setArtistsNames();
         }
     }
 
@@ -76,6 +83,7 @@ public class CurrentTrack {
         this.trackName = null;
         this.albumCoverURL = null;
         this.featuresEmbed = null;
+        this.artistsNames = null;
     }
 
     /** gets and sets the audio features for the track **/
@@ -122,10 +130,21 @@ public class CurrentTrack {
                 "      hAxis: { ticks: [] },\n" +
                 "      legend: { position: 'none' },\n" +
                 "      chartArea: { left: 100, width: 200 },\n" +
+                "      backgroundColor: 'gainsboro',\n" +
+                "      enableInteractivity: 'false',\n" +
                 "      };\n" +
                 "\n" +
                 "      var chart = new google.visualization.BarChart(document.getElementById('features_div'));\n" +
                 "      chart.draw(data, options);\n" +
                 "    }";
+    }
+
+    /** sets the tracks' artists **/
+    private void setArtistsNames() {
+        ArrayList<String> output = new ArrayList<>();
+        for (ArtistSimplified as : apiTrack.getArtists()) {
+            output.add(as.getName());
+        }
+        this.artistsNames = output;
     }
 }
