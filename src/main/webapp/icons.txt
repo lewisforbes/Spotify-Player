@@ -1,0 +1,5 @@
+Back: https://www.flaticon.com/free-icon/left-arrow_860739?term=back&page=1&position=4
+Forward: https://www.flaticon.com/free-icon/next_860777
+Play: https://www.flaticon.com/free-icon/play-button_860780
+Refresh: https://www.flaticon.com/free-icon/reload_860822
+Spotify: https://www.flaticon.com/free-icon/spotify_2111685?term=spotify&page=1&position=1

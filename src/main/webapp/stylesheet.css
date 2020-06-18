@@ -1,0 +1,24 @@
+* {
+ font-family: Arial;
+}
+
+h1 {
+font-size: xxx-large;
+
+}
+
+h2 { font-size: xx-large; }
+
+p, h3, label {
+  color: grey;
+}
+
+a {
+  color: darkslategrey;
+  text-decoration: none;
+}
+a:hover { color:#264040 }
+
+body {
+  background-color: gainsboro;
+}
