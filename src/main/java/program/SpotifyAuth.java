@@ -17,7 +17,7 @@ public class SpotifyAuth {
     /** app-specific API configurations **/
     private static final String clientID = Confidential.SpotifyAuth_clientID;
     private static final String clientSecret = Confidential.SpotifyAuth_clientSecret;
-    private static final String scope = "user-read-currently-playing";
+    private static final String scope = "user-read-currently-playing, user-modify-playback-state";
     private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/player/go");
 
     /** the API object to be created and passed through **/

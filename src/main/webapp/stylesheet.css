@@ -17,7 +17,10 @@ a {
   color: darkslategrey;
   text-decoration: none;
 }
-a:hover { color:#264040 }
+
+a:hover {
+    color:#264040;
+    }
 
 body {
   background-color: gainsboro;

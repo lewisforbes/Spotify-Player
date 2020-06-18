@@ -20,6 +20,7 @@ import java.io.IOException;
 public class GoServlet extends HttpServlet {
     /** the api for the program **/
     private static SpotifyApi api;
+    public static SpotifyApi getApi() { return api; }
 
     /** the currently playing track **/
     private static CurrentTrack current;
@@ -56,10 +57,17 @@ public class GoServlet extends HttpServlet {
 
     /** forwards the view once current is set **/
     private static void forward(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("songTitle", current.getTrackName());
-        req.setAttribute("albumCoverURL", current.getAlbumCoverURL());
+        if (current.isTrackPlaying()) {
+            req.setAttribute("songTitle", current.getTrackName());
+            req.setAttribute("albumCoverURL", current.getAlbumCoverURL());
+            req.setAttribute("featureChartJS", current.getFeaturesEmbed());
 
-        RequestDispatcher view = req.getRequestDispatcher("go.jsp");
-        view.forward(req,resp);
+            RequestDispatcher view = req.getRequestDispatcher("trackPlaying.jsp");
+            view.forward(req,resp);
+        } else {
+            RequestDispatcher view = req.getRequestDispatcher("noTrackPlaying.jsp");
+            view.forward(req,resp);
+        }
+
     }
 }
