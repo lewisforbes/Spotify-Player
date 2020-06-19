@@ -7,6 +7,8 @@ import com.wrapper.spotify.model_objects.specification.AudioFeatures;
 import com.wrapper.spotify.model_objects.specification.Track;
 import com.wrapper.spotify.requests.data.player.GetUsersCurrentlyPlayingTrackRequest;
 import com.wrapper.spotify.requests.data.tracks.GetAudioFeaturesForTrackRequest;
+import program.location.CountryFromPlace;
+import program.location.GetLocation;
 
 import java.util.ArrayList;
 
@@ -39,8 +41,8 @@ public class CurrentTrack {
     private float speechiness;
     private float valence;
     /** the embedded chart with all features info **/
-    private String featuresEmbed;
-    public String getFeaturesEmbed() { return featuresEmbed; }
+    private String chartsEmbed;
+    public String getChartsEmbed() { return chartsEmbed; }
 
 
     /** make a new CurrentTrack **/
@@ -60,8 +62,10 @@ public class CurrentTrack {
             this.trackName = apiTrack.getName();
             this.albumCoverURL = apiTrack.getAlbum().getImages()[0].getUrl();
             setAudioFeatures();
-            setFeaturesEmbed();
             setArtistsNames();
+            setChartsEmbed();
+
+
         }
     }
 
@@ -82,7 +86,7 @@ public class CurrentTrack {
         this.apiTrack = null;
         this.trackName = null;
         this.albumCoverURL = null;
-        this.featuresEmbed = null;
+        this.chartsEmbed = null;
         this.artistsNames = null;
     }
 
@@ -108,37 +112,6 @@ public class CurrentTrack {
         this.valence = audioFeatures.getValence();
     }
 
-    /** creates and sets the chart embed visualising the track's audio features **/
-    private void setFeaturesEmbed() {
-        this.featuresEmbed = "google.charts.load('current', {packages: ['corechart', 'bar']});\n" +
-                "google.charts.setOnLoadCallback(drawChart);\n" +
-                "\n" +
-                "function drawChart() {\n" +
-                "      var data = google.visualization.arrayToDataTable([\n" +
-                "        ['Feature', 'Value', { role: 'style' } ],\n" +
-                "        ['Acousticness', " + this.acousticness + ", 'color: 5D35FC'],\n" +
-                "        ['Danceability', " + this.danceability + ", 'color: 1C047D'],\n" +
-                "        ['Energy', " + this.energy + ", 'color: A29BBD'],\n" +
-                "        ['Instrumentalness', " + this.instrumentalness + ", 'color: 312C47'],\n" +
-                "        ['Speechiness', " + this.speechiness + ", 'color: 896DFC'],\n" +
-                "        ['Liveness', " + this.liveness + ", 'color: 957DC9'],\n" +
-                "        ['Valence', " + this.valence + ", 'color: 4225B8'],\n" +
-                "      ]);\n" +
-                "      \n" +
-                "      var options = {\n" +
-                "      axisTitlePosition: 'none',\n" +
-                "      hAxis: { ticks: [] },\n" +
-                "      legend: { position: 'none' },\n" +
-                "      chartArea: { left: 100, width: 200 },\n" +
-                "      backgroundColor: 'gainsboro',\n" +
-                "      enableInteractivity: 'false',\n" +
-                "      };\n" +
-                "\n" +
-                "      var chart = new google.visualization.BarChart(document.getElementById('features_div'));\n" +
-                "      chart.draw(data, options);\n" +
-                "    }";
-    }
-
     /** sets the tracks' artists **/
     private void setArtistsNames() {
         ArrayList<String> output = new ArrayList<>();
@@ -146,5 +119,116 @@ public class CurrentTrack {
             output.add(as.getName());
         }
         this.artistsNames = output;
+    }
+
+    /** creates and sets the chart embed visualising the track's audio features **/
+    private String mkFeaturesEmbed() {
+        return
+           "google.charts.setOnLoadCallback(drawFeatures);\n" +
+                   "\n" +
+                   " function drawFeatures() {\n" +
+                   "   var features_data = google.visualization.arrayToDataTable([\n" +
+                   "     ['Feature', 'Value', {\n" +
+                   "       role: 'style'\n" +
+                   "     }],\n" +
+                   "     ['Acousticness', " + this.acousticness + ", 'color: 5D35FC'],\n" +
+                   "     ['Danceability', " + this.danceability + ", 'color: 1C047D'],\n" +
+                   "     ['Energy', " + this.energy + ", 'color: A29BBD'],\n" +
+                   "     ['Instrumentalness', " + this.instrumentalness + ", 'color: 312C47'],\n" +
+                   "     ['Speechiness', " + this.speechiness + ", 'color: 896DFC'],\n" +
+                   "     ['Liveness', " + this.liveness + ", 'color: 957DC9'],\n" +
+                   "     ['Valence', " + this.valence + ", 'color: 4225B8'],\n" +
+                   "   ]);\n" +
+                   "\n" +
+                   "   var features_options = {\n" +
+                   "     axisTitlePosition: 'none',\n" +
+                   "     hAxis: {\n" +
+                   "       ticks: []\n" +
+                   "     },\n" +
+                   "     legend: {\n" +
+                   "       position: 'none'\n" +
+                   "     },\n" +
+                   "     chartArea: {\n" +
+                   "       left: 100,\n" +
+                   "       width: 400,\n" +
+                   "     },\n" +
+                   "     backgroundColor: {\n" +
+                   "       fill: 'gainsboro',\n" +
+//                   "       stroke: '85828F',\n" +
+//                   "       strokeWidth: 3\n" +
+                   "     },\n" +
+                   "     enableInteractivity: 'false',\n" +
+                   "   };\n" +
+                   "\n" +
+                   "   var features_chart = new google.visualization.BarChart(document.getElementById('features_chart'));\n" +
+                   "\n" +
+                   "   google.visualization.events.addListener(features_chart, 'ready', function() {\n" +
+                   "     features_chart.innerHTML = '<img src=\"' + features_chart.getImageURI() + '\">';\n" +
+                   "     console.log(features_chart.innerHTML);\n" +
+                   "   });\n" +
+                   "\n" +
+                   "   features_chart.draw(features_data, features_options);\n" +
+                   " }";
+    }
+
+    /** sets the maps embed **/
+    private String mkMapEmbed() {
+        assert artistsNames != null;
+        /* makes list of unique artists' countries */
+        ArrayList<String> artistsCountries = new ArrayList<>();
+        String countryToAdd;
+        for (String artistName : artistsNames) {
+            countryToAdd = CountryFromPlace.getCountryCode(GetLocation.getLoc(artistName));
+            if (!artistsCountries.contains(countryToAdd)) {
+                artistsCountries.add(countryToAdd);
+            }
+        }
+
+        /* formats the countries for embedding */
+        StringBuilder formattedCountries = new StringBuilder("['Country', 'Popularity']");
+        for (String country : artistsCountries) {
+            formattedCountries.append(",\n['").append(country).append("', ").append("1").append("]");
+        }
+
+        return
+            "google.charts.setOnLoadCallback(drawMap);\n" +
+            "function drawMap() {\n" +
+            "        var map_data = google.visualization.arrayToDataTable([\n" +
+            formattedCountries.toString() +
+            "        ]);\n" +
+            "\n" +
+            "var map_options = {\n" +
+                    "     minValue: 0,\n" +
+                    "     colors: ['5D35FC'],\n" +
+                    "     backgroundColor: {\n" +
+                    "       fill: 'gainsboro',\n" +
+//                    "       stroke: '85828F',\n" +
+//                    "       strokeWidth: 3\n" +
+                    "     },\n" +
+                    "     datalessRegionColor: 'A29BBD',\n" +
+                    "     defaultColor: 'A29BBD',\n" +
+                    "     keepAspectRatio: 'true',\n" +
+                    "     enableInteractivity: 'false',\n" +
+                    "     legend: 'hide',\n" +
+                    "   };\n" +
+                    "   var map_chart = new google.visualization.GeoChart(document.getElementById('artists_map'));\n" +
+                    "\n" +
+                    "\n" +
+                    "   google.visualization.events.addListener(map_chart, 'ready', function() {\n" +
+                    "     artists_map.innerHTML = '<img src=\"' + map_chart.getImageURI() + '\">';\n" +
+                    "     console.log(artists_map.innerHTML);\n" +
+                    "   });\n" +
+                    "\n" +
+                    "   map_chart.draw(map_data, map_options);\n" +
+                    " }";
+    }
+
+    /** makes and sets the full JS for the embedded charts **/
+    private void setChartsEmbed() {
+        this.chartsEmbed =
+                " google.charts.load('current', {\n" +
+                "        'packages':['geochart', 'corechart'],\n" +
+                "        'mapsApiKey': '" + Confidential.ReturnObject_API_KEY + "'\n" +
+                "      });" + "\n" + mkFeaturesEmbed() + "\n" + mkMapEmbed();
     }
 }

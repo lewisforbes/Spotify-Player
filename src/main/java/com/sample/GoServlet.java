@@ -60,7 +60,7 @@ public class GoServlet extends HttpServlet {
         if (current.isTrackPlaying()) {
             req.setAttribute("songTitle", current.getTrackName());
             req.setAttribute("albumCoverURL", current.getAlbumCoverURL());
-            req.setAttribute("featureChartJS", current.getFeaturesEmbed());
+            req.setAttribute("chartsEmbed", current.getChartsEmbed());
 
             RequestDispatcher view = req.getRequestDispatcher("trackPlaying.jsp");
             view.forward(req,resp);

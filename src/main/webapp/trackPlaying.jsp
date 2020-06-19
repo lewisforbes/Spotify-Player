@@ -12,22 +12,28 @@
 <!--    <meta http-equiv="Refresh" content="<%=refreshTime %>" />-->
 
     <style>
-    .ib {
-        display:inline-block;
-        padding-top:3%;
+    .padding {
+        width: 100%;
+        padding-top: 7%;
     }
 
-    .button {
-        width: 6%;
-        padding: 2%;
+    .main_div {
+        display: inline-block;
+        width: 20%;
+        vertical-align: center;
     }
+
+    .inside {
+        border: none;
+    }
+
     </style>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         <%
-        String chartJS = (String) request.getAttribute("featureChartJS");
-        out.println(chartJS);
+        String chartsEmbed = (String) request.getAttribute("chartsEmbed");
+        out.println(chartsEmbed);
         %>
     </script>
 
@@ -39,18 +45,21 @@ String songTitle = (String) request.getAttribute("songTitle");
 String albumCover = (String) request.getAttribute("albumCoverURL");
 %>
 <center>
-    <div class="ib">
-        <h2><% out.println(songTitle); %></h2>
-        <img src="<%=albumCover %>" style="width:50%;"/>
-        <div>
-            <a href="go"><img src="https://image.flaticon.com/icons/png/512/860/860822.png" class="button"/></a>
-            <a href="skip"><img src="https://image.flaticon.com/icons/svg/860/860777.svg" class="button"/></a>
-        </div>
+    <div class="padding"></div>
+    <div class="main_div">
+        <h2 class="inside" style="width:50%;"> <% out.println(songTitle); %></h2>
+        <img class="inside" src="<%=albumCover %>" style="width:90%;"/>
+        <h3 style="color:black">Stereophonics</h3>
     </div>
-    <div class="ib">
-        <div id="features_div" class = "ib"></div>
+    <div class="main_div">
+        <div class="inside" id="features_chart" style="width:90%;"></div>
+        <div class="inside" id="artists_map" style="width:90%;"></div>
     </div>
 </center>
+<!--<div class="corner">-->
+<!--    <a href="go"><img src="https://image.flaticon.com/icons/png/512/860/860822.png" class="button"/></a><br>-->
+<!--    <a href="skip"><img src="https://image.flaticon.com/icons/svg/860/860777.svg" class="button"/></a>-->
+<!--</div>-->
 </body>
 
 </html>
