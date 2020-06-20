@@ -25,7 +25,8 @@
 <div class="centre">
     <center>
         <h2>No track is currently playing.</h2>
-        <a href="go"><img src="https://image.flaticon.com/icons/png/512/860/860822.png" style="width:10%; "/></a>
+        <a href="go"><img src="https://image.flaticon.com/icons/png/512/860/860822.png" style="display:inline-block; width:10%;"/></a>
+        <a href="index.html"><img src="https://image.flaticon.com/icons/svg/860/860807.svg" style="display:inline-block; width:10%;"/></a>
     </center>
 </div>
 </body>

@@ -25,6 +25,10 @@ public class GoServlet extends HttpServlet {
     /** the currently playing track **/
     private static CurrentTrack current;
 
+    /** the user's crossfade setting **/
+    private static int crossfade;
+    public static void setCrossfade(int given) { crossfade = given; }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (current != null) {
@@ -49,7 +53,7 @@ public class GoServlet extends HttpServlet {
         forward(req, resp);
     }
 
-    /** resets everything **/
+    /** resets everything bar crossfade **/
     public static void reset() {
         api = null;
         current = null;
@@ -58,16 +62,22 @@ public class GoServlet extends HttpServlet {
     /** forwards the view once current is set **/
     private static void forward(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (current.isTrackPlaying()) {
+            int refreshTime = current.getRefreshTime();
+            refreshTime -= (crossfade+1);
+            if (refreshTime<0) { refreshTime = 0; }
+
             req.setAttribute("songTitle", current.getTrackName());
             req.setAttribute("albumCoverURL", current.getAlbumCoverURL());
             req.setAttribute("chartsEmbed", current.getChartsEmbed());
+            req.setAttribute("artistsNames", current.getArtistsNamesStr());
+            req.setAttribute("refreshTime", "" + refreshTime);
 
             RequestDispatcher view = req.getRequestDispatcher("trackPlaying.jsp");
             view.forward(req,resp);
         } else {
             RequestDispatcher view = req.getRequestDispatcher("noTrackPlaying.jsp");
             view.forward(req,resp);
-        }
+       }
 
     }
 }

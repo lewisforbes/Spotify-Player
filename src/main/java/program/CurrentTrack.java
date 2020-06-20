@@ -30,7 +30,25 @@ public class CurrentTrack {
     public boolean isTrackPlaying() { return trackPlaying; }
     /** the track's artists' names **/
     private ArrayList<String> artistsNames;
-    public ArrayList<String> getArtistsNames() { return artistsNames; }
+    public String getArtistsNamesStr() {
+        assert artistsNames.size() != 0;
+        String formatted = artistsNames.get(0);
+        if (artistsNames.size() == 1) {
+            return artistsNames.get(0);
+        }
+
+        for (int i=1; i<artistsNames.size()-1; i++) {
+            formatted += artistsNames.get(i) + ", ";
+        }
+
+        formatted += " and " + artistsNames.get(artistsNames.size()-1);
+        return formatted;
+
+
+    }
+    /** the time before the song ends and the page should refresh **/
+    private int refreshTime;
+    public int getRefreshTime() { return refreshTime; }
 
     /** audio features **/
     private float acousticness;
@@ -53,32 +71,46 @@ public class CurrentTrack {
 
     /** update the with current info **/
     public void update() {
-        this.apiTrack = getCurrentTrack();
-        if (apiTrack == null) {
+        CurrentlyPlaying playing = getCurrentTrack();
+        Track newTrack;
+        try {
+            newTrack = (Track) playing.getItem();
+        } catch (NullPointerException e) {
             this.trackPlaying = false;
             reset();
-        } else {
-            this.trackPlaying = true;
-            this.trackName = apiTrack.getName();
-            this.albumCoverURL = apiTrack.getAlbum().getImages()[0].getUrl();
-            setAudioFeatures();
-            setArtistsNames();
-            setChartsEmbed();
-
-
+            return;
         }
+
+        this.refreshTime = getRefreshTime(playing.getProgress_ms(), newTrack.getDurationMs());
+
+        if ((apiTrack != null) && (newTrack.getId().equals(apiTrack.getId()))) {
+            return; // same track
+        }
+
+        this.apiTrack = newTrack;
+        this.trackPlaying = true;
+        this.trackName = apiTrack.getName();
+        this.albumCoverURL = apiTrack.getAlbum().getImages()[0].getUrl();
+        setAudioFeatures();
+        setArtistsNames();
+        setChartsEmbed();
     }
 
     /** gets a user's currently playing track **/
-    private Track getCurrentTrack() {
+    private CurrentlyPlaying getCurrentTrack() {
         final GetUsersCurrentlyPlayingTrackRequest getUsersCurrentlyPlayingTrackRequest = api.getUsersCurrentlyPlayingTrack().build();
         try {
-            final CurrentlyPlaying currentlyPlaying = getUsersCurrentlyPlayingTrackRequest.execute();
-            return (Track) currentlyPlaying.getItem();
+            return getUsersCurrentlyPlayingTrackRequest.execute();
         } catch (Exception e) {
             // no track playing
             return null;
         }
+    }
+
+    /** calculates the time time the playing page should wait before refreshing **/
+    private static int getRefreshTime(long progress, long duration) {
+        double differenceSecs = ((double) duration/1000L) - ((double) progress/1000L);
+        return ((int) Math.ceil(differenceSecs));
     }
 
     /** clears all values of the track **/
@@ -88,6 +120,7 @@ public class CurrentTrack {
         this.albumCoverURL = null;
         this.chartsEmbed = null;
         this.artistsNames = null;
+        this.refreshTime = 0;
     }
 
     /** gets and sets the audio features for the track **/

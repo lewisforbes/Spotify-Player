@@ -16,8 +16,15 @@ import java.io.IOException;
 public class AuthServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int crossfade = Integer.parseInt(req.getParameter("crossfade"));
+        GoServlet.setCrossfade(crossfade);
         GoServlet.reset();
         resp.sendRedirect(SpotifyAuth.getURL()); // sends user to oAuth page
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.sendRedirect("index.html"); // should not be reached by get
     }
 }

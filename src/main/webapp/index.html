@@ -6,24 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="stylesheet.css">
     <title>Web Player</title>
-
-    <style>
-        .centre {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -80%);
-        }
-    </style>
 </head>
 
 <body>
-<div class="centre">
+<div style="padding-top:5%"></div>
     <center>
-        <h2>click the button to begin</h2>
-        <a href="auth"><img src="https://image.flaticon.com/icons/svg/2111/2111685.svg" style="width:10%"></a>
+        <form method="post" action="auth" autocomplete="off">
+            <h2>press the button to begin</h2>
+            <label for="crossfade">crossfade:</label>
+            <input type="number" id="crossfade" name="crossfade" size="20" required min="0" max="12" value="10"><br><br>
+            <input type="image" src="https://image.flaticon.com/icons/svg/2111/2111685.svg" style="width:4.5%">
+        </form>
+
+        <br><br><br><br>
+
+        <div>
+            <h3>Thanks to:</h3>
+            <p><a href="https://www.flaticon.com/authors/becris">Becris</a> and <a href="https://www.flaticon.com/authors/pixel-perfect">Pixel Perfect</a> from <a href="https://www.flaticon.com/">flaticon.com</a></p>
+            <a href="https://github.com/thelinmichael/spotify-web-api-java">thelinmichael on Github</a>
+            <a href="https://developers.google.com/chart/interactive/docs/gallery/geochart">Google Charts</a>
+        </div>
+
+        <div>
+            <br><br>
+            <p>Made by <a href="https://lewisforbes.com/">Lewis Forbes</a></p>
+            <p>Code available on <a href="https://github.com/lewisforbes/Spotify-Player">GitHub</a></p>
+        </div>
     </center>
-</div>
 </body>
 
 </html>
