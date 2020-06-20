@@ -19,8 +19,8 @@
 
     .main_div {
         display: inline-block;
-        width: 20%;
-        vertical-align: center;
+        width: 30%;
+        vertical-align: centre;
     }
 
 
@@ -58,6 +58,7 @@ String artistsNames = (String) request.getAttribute("artistsNames");
     <div class="main_div">
         <div class="inside" id="features_chart" style="width:90%;"></div>
         <div class="inside" id="artists_map" style="width:90%;"></div>
+        <div><p><br></p></div>
     </div>
 
 <div class="corner">

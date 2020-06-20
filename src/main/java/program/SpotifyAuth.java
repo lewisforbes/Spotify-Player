@@ -18,7 +18,8 @@ public class SpotifyAuth {
     private static final String clientID = Confidential.SpotifyAuth_clientID;
     private static final String clientSecret = Confidential.SpotifyAuth_clientSecret;
     private static final String scope = "user-read-currently-playing, user-modify-playback-state";
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/player/go");
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://lewis-forbes.us-east-2.elasticbeanstalk.com/player/go");
+    //    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/player/go"); // local testing
 
     /** the API object to be created and passed through **/
     private static SpotifyApi api = new SpotifyApi.Builder().setClientId(clientID).setClientSecret(clientSecret).setRedirectUri(redirectUri).build();
