@@ -6,7 +6,6 @@ import com.wrapper.spotify.requests.data.library.CheckUsersSavedTracksRequest;
 import com.wrapper.spotify.requests.data.library.SaveTracksForUserRequest;
 import com.wrapper.spotify.requests.data.playlists.AddItemsToPlaylistRequest;
 import com.wrapper.spotify.requests.data.playlists.GetPlaylistRequest;
-import org.apache.hc.core5.http.ParseException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
