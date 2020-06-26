@@ -24,10 +24,15 @@ public class GoServlet extends HttpServlet {
 
     /** the currently playing track **/
     private static CurrentTrack current;
+    public static String getCurrentTrackID() { return (current==null ? null : current.getTrackID()); }
 
     /** the user's crossfade setting **/
     private static int crossfade;
     public static void setCrossfade(int given) { crossfade = given; }
+
+    /** the message to be shown on the snackbar. Null if SB should not be shown. **/
+    private static String snackbarMessage;
+    public static void setSnackbarMessage(String newMessage) { snackbarMessage = newMessage; }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -57,20 +62,24 @@ public class GoServlet extends HttpServlet {
     public static void reset() {
         api = null;
         current = null;
+        snackbarMessage = null;
     }
 
     /** forwards the view once current is set **/
     private static void forward(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (current.isTrackPlaying()) {
+
             int refreshTime = current.getRefreshTime();
-            refreshTime -= (crossfade+1);
-            if (refreshTime<0) { refreshTime = 0; }
+            refreshTime -= (crossfade);
+            if (refreshTime<0) { refreshTime = 1; }
 
             req.setAttribute("songTitle", current.getTrackName());
             req.setAttribute("albumCoverURL", current.getAlbumCoverURL());
             req.setAttribute("chartsEmbed", current.getChartsEmbed());
             req.setAttribute("artistsNames", current.getArtistsNamesStr());
             req.setAttribute("refreshTime", "" + refreshTime);
+            req.setAttribute("snackbarMessage", snackbarMessage);
+            snackbarMessage = null; // means the message can only show once
 
             RequestDispatcher view = req.getRequestDispatcher("trackPlaying.jsp");
             view.forward(req,resp);

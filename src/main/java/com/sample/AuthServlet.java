@@ -17,8 +17,12 @@ public class AuthServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int crossfade = Integer.parseInt(req.getParameter("crossfade"));
+        final int crossfade = Integer.parseInt(req.getParameter("crossfade"));
         GoServlet.setCrossfade(crossfade);
+
+        final String playlistID = extractID(req.getParameter("playlist"));
+        SaveServlet.setPlaylistID(playlistID);
+
         GoServlet.reset();
         resp.sendRedirect(SpotifyAuth.getURL()); // sends user to oAuth page
     }
@@ -26,5 +30,24 @@ public class AuthServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.sendRedirect("index.html"); // should not be reached by get
+    }
+
+    /** extracts the playlist ID from a url **/
+    private static String extractID(String url) {
+        if (url == null) {
+            return null;
+        }
+
+        final String before = "/playlist/";
+
+        if (!url.contains(before)) {
+            return null;
+        }
+
+        if (url.contains("?si=")) {
+            url = url.substring(0, url.indexOf("?si="));
+        }
+
+        return url.substring(url.indexOf(before) + before.length());
     }
 }

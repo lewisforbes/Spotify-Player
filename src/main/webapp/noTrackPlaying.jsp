@@ -11,12 +11,16 @@
     <title>Web Player</title>
 
     <style>
-        .centre {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -80%);
-        }
+    * {
+        color: #312C47;
+    }
+
+    .centre {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -80%);
+    }
     </style>
 
 </head>

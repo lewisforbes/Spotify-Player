@@ -3,3 +3,4 @@ Forward: https://www.flaticon.com/free-icon/next_860828
 Refresh: https://www.flaticon.com/free-icon/reload_860822
 Spotify: https://www.flaticon.com/free-icon/spotify_2111685?term=spotify&page=1&position=1
 Home: https://www.flaticon.com/free-icon/home_860807
+Plus: https://www.flaticon.com/free-icon/add_860785?term=plus&page=1&position=5

@@ -9,10 +9,6 @@ font-size: xxx-large;
 
 h2 { font-size: xx-large; }
 
-p, h3, label {
-  color: #85828F;
-}
-
 a {
   color: darkslategrey;
   text-decoration: none;

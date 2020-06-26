@@ -22,6 +22,9 @@ public class CurrentTrack {
     /** the track name **/
     private String trackName;
     public String getTrackName() { return trackName; }
+    /** the track ID **/
+    private String trackID;
+    public String getTrackID() { return trackID; }
     /** link to the album art **/
     private String albumCoverURL;
     public String getAlbumCoverURL() { return albumCoverURL; }
@@ -90,6 +93,7 @@ public class CurrentTrack {
         this.apiTrack = newTrack;
         this.trackPlaying = true;
         this.trackName = apiTrack.getName();
+        this.trackID = apiTrack.getId();
         this.albumCoverURL = apiTrack.getAlbum().getImages()[0].getUrl();
         setAudioFeatures();
         setArtistsNames();
@@ -117,6 +121,7 @@ public class CurrentTrack {
     private void reset() {
         this.apiTrack = null;
         this.trackName = null;
+        this.trackID = null;
         this.albumCoverURL = null;
         this.chartsEmbed = null;
         this.artistsNames = null;
@@ -241,16 +246,16 @@ public class CurrentTrack {
                     "     datalessRegionColor: 'A29BBD',\n" +
                     "     defaultColor: 'A29BBD',\n" +
                     "     keepAspectRatio: 'true',\n" +
-                    "     enableInteractivity: 'false',\n" +
+                    "     enableRegionInteractivity: 'false',\n" +
                     "     legend: 'hide',\n" +
                     "   };\n" +
                     "   var map_chart = new google.visualization.GeoChart(document.getElementById('artists_map'));\n" +
                     "\n" +
                     "\n" +
-                    "   google.visualization.events.addListener(map_chart, 'ready', function() {\n" +
-                    "     artists_map.innerHTML = '<img src=\"' + map_chart.getImageURI() + '\">';\n" +
-                    "     console.log(artists_map.innerHTML);\n" +
-                    "   });\n" +
+//                    "   google.visualization.events.addListener(map_chart, 'ready', function() {\n" +
+//                    "     artists_map.innerHTML = '<img src=\"' + map_chart.getImageURI() + '\">';\n" +
+//                    "     console.log(artists_map.innerHTML);\n" +
+//                    "   });\n" +
                     "\n" +
                     "   map_chart.draw(map_data, map_options);\n" +
                     " }";
