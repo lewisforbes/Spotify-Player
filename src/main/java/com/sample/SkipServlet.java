@@ -27,12 +27,12 @@ public class SkipServlet extends HttpServlet {
 
         skipSong(api);
         try {
-            Thread.sleep(100);
+            Thread.sleep(300);
+            resp.sendRedirect("go");
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalArgumentException("Was unable to pause.");
         }
-        resp.sendRedirect("go");
     }
 
     /** skips to the next playing song **/

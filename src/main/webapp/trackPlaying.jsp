@@ -24,7 +24,7 @@
 
     .padding {
         width: 100%;
-        padding-top: 4%;
+        padding-top: 5%;
     }
 
     .main_div {
@@ -97,6 +97,12 @@
 String songTitle = (String) request.getAttribute("songTitle");
 String albumCover = (String) request.getAttribute("albumCoverURL");
 String artistsNames = (String) request.getAttribute("artistsNames");
+
+String showControls = (String) request.getAttribute("showControls");
+String potentialHidden = "";
+if (showControls.equals("false")) {
+    potentialHidden = "hidden";
+}
 %>
 <center>
     <div class="padding"></div>
@@ -111,7 +117,7 @@ String artistsNames = (String) request.getAttribute("artistsNames");
         <div><p><br></p></div>
     </div>
 
-<div class="corner">
+<div class="corner" <% out.print(potentialHidden); %>>
     <a href="index.html"><img src="https://image.flaticon.com/icons/svg/860/860807.svg" class="button" style="padding-right:1.5%;"/></a>
     <a href="go"><img src="https://image.flaticon.com/icons/png/512/860/860822.png" class="button" style="padding-right:1%;"/></a>
     <a href="save"><img src="https://image.flaticon.com/icons/svg/1828/1828925.svg" class="button" style="padding-right:1%;"/></a>

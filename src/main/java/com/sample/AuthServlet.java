@@ -23,6 +23,9 @@ public class AuthServlet extends HttpServlet {
         final String playlistID = extractID(req.getParameter("playlist"));
         SaveServlet.setPlaylistID(playlistID);
 
+        String value = req.getParameter("controls");
+        GoServlet.setShowControls(value != null);
+
         GoServlet.reset();
         resp.sendRedirect(SpotifyAuth.getURL()); // sends user to oAuth page
     }

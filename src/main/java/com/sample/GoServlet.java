@@ -34,6 +34,10 @@ public class GoServlet extends HttpServlet {
     private static String snackbarMessage;
     public static void setSnackbarMessage(String newMessage) { snackbarMessage = newMessage; }
 
+    /** if the music controls should be shown **/
+    private static boolean showControls;
+    public static void setShowControls(boolean shouldShow) { showControls = shouldShow; }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (current != null) {
@@ -79,6 +83,7 @@ public class GoServlet extends HttpServlet {
             req.setAttribute("artistsNames", current.getArtistsNamesStr());
             req.setAttribute("refreshTime", "" + refreshTime);
             req.setAttribute("snackbarMessage", snackbarMessage);
+            req.setAttribute("showControls", Boolean.toString(showControls).toLowerCase());
             snackbarMessage = null; // means the message can only show once
 
             RequestDispatcher view = req.getRequestDispatcher("trackPlaying.jsp");
